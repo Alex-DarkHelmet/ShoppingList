@@ -38,9 +38,11 @@ class ShopItemViewModel: ViewModel() {
         val count = parseCount(inputCount)
         val validField = validateInput(name, count)
         if (validField) {
-            val shopItem = ShopItem(name, count, true)
-            editShopItemUseCase.editShopItem(shopItem)
-            closeScreen()
+            _shopItem.value?.let {
+                val item = it.copy(name = name, count = count)
+                editShopItemUseCase.editShopItem(item)
+                finishWork()
+            }
         }
     }
 
@@ -49,17 +51,14 @@ class ShopItemViewModel: ViewModel() {
         _shopItem.value = item
     }
 
-    fun addEditedShopItem(inputName: String?, inputCount: String?) {
+    fun addShopItem(inputName: String?, inputCount: String?) {
         val name = parseName(inputName)
         val count = parseCount(inputCount)
         val validField = validateInput(name, count)
         if (validField) {
-            _shopItem.value?.let {
-                val item = it.copy(name = name, count = count)
-                addShopItemUseCase.addShopItem(item)
-                closeScreen()
-            }
-
+            val shopItem = ShopItem(name, count, true)
+            addShopItemUseCase.addShopItem(shopItem)
+            finishWork()
         }
     }
 
@@ -88,15 +87,15 @@ class ShopItemViewModel: ViewModel() {
         return result
     }
 
-    private fun resetErrorInputName() {
+    fun resetErrorInputName() {
         _errorInputName.value = false
     }
 
-    private fun resetErrorInputCount() {
+    fun resetErrorInputCount() {
         _errorInputCount.value = false
     }
 
-    private fun closeScreen(){
+    private fun finishWork(){
         _closeScreen.value = Unit
     }
 }
