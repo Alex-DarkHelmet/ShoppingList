@@ -13,7 +13,7 @@ object ShopListRepositoryImpl: ShopListRepository {
     private var addId = 0
 
     init {
-        for (i in 0 until 200) {
+        for (i in 0 until 20) {
             val item = ShopItem("Name ${i + 1}", count = i + 1, Random.nextBoolean())
             addShopItem(item)
         }
